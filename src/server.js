@@ -51,9 +51,9 @@ app.get('/', (req, res) => {
   res.cookie('visited', Date.now().toString());
   res.render('welcome', {
     name: req.query.name || "World",
-    datetime: req.query.date || new Date().toLocaleString(),
-    visitor_count: req.query.nextVisitorId || nextVisitorId,
-    visit_time: req.query.visited || Math.round((new Date().getTime() - currentTime.getTime()) / 1000),
+    datetime: req.query.datetime || new Date().toLocaleString(),
+    visitor_count: req.query.visitor_count || nextVisitorId,
+    visit_time: req.query.visit_time || Math.round((new Date().getTime() - currentTime.getTime()) / 1000),
   });
   currentTime = new Date();
   
