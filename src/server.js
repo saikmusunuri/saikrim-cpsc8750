@@ -42,20 +42,29 @@ const name = req.query.name || "World";
 
 app.use(cookieParser());
 let nextVisitorId = 1;
-var currentTime = new Date();
+var msg = "";
+
 app.get('/', (req, res) => {
+  var currentTime = req.cookies.visited;
   if(req.cookies['visitorId']){
   res.cookie('visitorId', nextVisitorId);}
   else
   res.cookie('visitorId', nextVisitorId++);
-  res.cookie('visited', Date.now().toString());
+  if(currentTime!=null){
+    currentTime = Math.floor((Date.now() - req.cookies.visited) / 1000);
+    msg = "It has been ${currentTime} seconds since your last time visit";
+  }
+  else {
+  msg = "You have never visited before."; 
+  }
+  res.cookie('visited', Date.now());
   res.render('welcome', {
     name: req.query.name || "World",
     datetime: req.query.datetime || new Date().toLocaleString(),
-    visitor_count: req.query.visitor_count || nextVisitorId,
-    visit_time: req.query.visit_time || Math.round((new Date().getTime() - currentTime.getTime()) / 1000),
+    visitor_count: nextVisitorId,
+    msg: msg
   });
-  currentTime = new Date();
+
   
 console.log(req.cookies);
 });
